@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="static/image/logo_compressed.png" alt="Weibo Public Opinion Analysis System Logo" width="700">
+<img src="static/image/logo_compressed.png" alt="Weibo Public Opinion Analysis System Logo" width="100%">
 
 <a href="https://trendshift.io/repositories/12461" target="_blank"><img src="https://trendshift.io/api/badge/repositories/12461" alt="666ghj%2FWeibo_PublicOpinion_AnalysisSystem | Trendshift" style="width: 250px; height: 55px;" width="250" height="55"/></a>
 
@@ -23,7 +23,9 @@
 
 ## ⚡ Project Overview
 
-**"WeiYu"** is an innovative multi-agent public opinion analysis system built from scratch, not limited to Weibo, and features universal simplicity and applicability across all platforms.
+**"BettaFish"** is an innovative multi-agent public opinion analysis system built from scratch. It helps break information cocoons, restore the original public sentiment, predict future trends, and assist decision-making. Users only need to raise analysis needs like chatting; the agents automatically analyze 30+ mainstream social platforms at home and abroad and millions of public comments.
+
+> Betta is a small yet combative and beautiful fish, symbolizing "small but powerful, fearless of challenges".
 
 See the system-generated research report on "Wuhan University Public Opinion": [In-depth Analysis Report on Wuhan University's Brand Reputation](./final_reports/final_report__20250827_131630.html)
 
@@ -103,10 +105,7 @@ Weibo_PublicOpinion_AnalysisSystem/
 ├── InsightEngine/                 # Private database mining Agent
 │   ├── agent.py                   # Agent main logic
 │   ├── llms/                      # LLM interface wrapper
-│   │   ├── deepseek.py            # DeepSeek API
-│   │   ├── kimi.py                # Kimi API
-│   │   ├── openai_llm.py          # OpenAI format API
-│   │   └── base.py                # LLM base class
+│   │   └── base.py                # Unified OpenAI-compatible client
 │   ├── nodes/                     # Processing nodes
 │   │   ├── base_node.py           # Base node class
 │   │   ├── formatting_node.py     # Formatting node
@@ -130,7 +129,6 @@ Weibo_PublicOpinion_AnalysisSystem/
 ├── ReportEngine/                  # Multi-round report generation Agent
 │   ├── agent.py                   # Agent main logic
 │   ├── llms/                      # LLM interfaces
-│   │   └── gemini.py              # Gemini API dedicated
 │   ├── nodes/                     # Report generation nodes
 │   │   ├── template_selection.py  # Template selection node
 │   │   └── html_generation.py     # HTML generation node
@@ -230,7 +228,7 @@ playwright install chromium
 
 #### 4.1 Configure API Keys
 
-Edit the `config.py` file and fill in your API keys (you can also choose your own models and search proxies; please see the config file for details):
+Edit the `config.py` file and fill in your API keys (you can also choose your own models and search proxies; see the config file for details):
 
 ```python
 # MySQL Database Configuration
@@ -238,26 +236,18 @@ DB_HOST = "localhost"
 DB_PORT = 3306
 DB_USER = "your_username"
 DB_PASSWORD = "your_password"
-DB_NAME = "weibo_analysis"
+DB_NAME = "your_db_name"
 DB_CHARSET = "utf8mb4"
 
-# DeepSeek API (Apply at: https://www.deepseek.com/)
-DEEPSEEK_API_KEY = "your_deepseek_api_key"
+# LLM configuration
+# You can switch each Engine's LLM provider as long as it follows the OpenAI-compatible request format
 
-# Tavily Search API (Apply at: https://www.tavily.com/)
-TAVILY_API_KEY = "your_tavily_api_key"
-
-# Kimi API (Apply at: https://www.kimi.com/)
-KIMI_API_KEY = "your_kimi_api_key"
-
-# Gemini API (Apply at: https://api.chataiapi.com/)
-GEMINI_API_KEY = "your_gemini_api_key"
-
-# Bocha Search API (Apply at: https://open.bochaai.com/)
-BOCHA_Web_Search_API_KEY = "your_bocha_api_key"
-
-# Silicon Flow API (Apply at: https://siliconflow.cn/)
-GUIJI_QWEN3_API_KEY = "your_guiji_api_key"
+# Insight Agent
+INSIGHT_ENGINE_API_KEY = "your_api_key"
+INSIGHT_ENGINE_BASE_URL = "https://api.moonshot.cn/v1"
+INSIGHT_ENGINE_MODEL_NAME = "kimi-k2-0711-preview"
+# Media Agent
+...
 ```
 
 #### 4.2 Database Initialization
@@ -271,7 +261,7 @@ python schema/init_database.py
 
 **Option 2: Use Cloud Database Service (Recommended)**
 
-We provide convenient cloud database service with 100,000+ daily real public opinion data, currently **free application** during the promotion period!
+We provide convenient cloud database service with 100,000+ daily real public opinion data, currently **free application**!
 
 - Real public opinion data, updated in real-time
 - Multi-dimensional tag classification
@@ -279,6 +269,8 @@ We provide convenient cloud database service with 100,000+ daily real public opi
 - Professional technical support
 
 **Contact us to apply for free cloud database access: 📧 670939375@qq.com**
+
+> To conduct a data compliance review and service upgrade, we are suspending new applications for the cloud database, effective October 1, 2025.
 
 ### 5. Launch System
 
@@ -373,30 +365,28 @@ SENTIMENT_CONFIG = {
 
 ### Integrate Different LLM Models
 
-The system supports multiple LLM providers, switchable in each agent's configuration:
+The system supports any LLM provider that follows the OpenAI request format. You only need to fill in KEY, BASE_URL, and MODEL_NAME in `config.py`.
 
-```python
-# Configure in each Engine's utils/config.py
-class Config:
-    default_llm_provider = "deepseek"  # Options: "deepseek", "openai", "kimi", "gemini", "qwen"
-    
-    # DeepSeek configuration
-    deepseek_api_key = "your_api_key"
-    deepseek_model = "deepseek-chat"
-    
-    # OpenAI compatible configuration
-    openai_api_key = "your_api_key"
-    openai_model = "gpt-3.5-turbo"
-    openai_base_url = "https://api.openai.com/v1"
-    
-    # Kimi configuration
-    kimi_api_key = "your_api_key"  
-    kimi_model = "moonshot-v1-8k"
-    
-    # Gemini configuration
-    gemini_api_key = "your_api_key"
-    gemini_model = "gemini-pro"
-```
+> What is the OpenAI request format? Here's a simple example:
+>```python
+>from openai import OpenAI
+>
+>client = OpenAI(api_key="your_api_key",
+>                base_url="https://api.siliconflow.cn/v1")
+>
+>response = client.chat.completions.create(
+>    model="Qwen/Qwen2.5-72B-Instruct",
+>    messages=[
+>        {
+>            'role': 'user',
+>            'content': "What new opportunities will reasoning models bring to the market?"
+>        }
+>    ],
+>)
+>
+>complete_response = response.choices[0].message.content
+>print(complete_response)
+>```
 
 ### Change Sentiment Analysis Models
 
@@ -583,28 +573,13 @@ This project is licensed under the [GPL-2.0 License](LICENSE). Please see the LI
 
 ### Business Cooperation
 
-- 🏢 **Enterprise Custom Development**
-- 📊 **Big Data Services**
-- 🎓 **Academic Collaboration**
-- 💼 **Technical Training**
-
-### Cloud Service Application
-
-**Free Cloud Database Service Application**:
-📧 Send email to: 670939375@qq.com  
-📝 Subject: WeiYu Cloud Database Application  
-📝 Description: Your use case and requirements  
+- **Enterprise Custom Development**
+- **Big Data Services**
+- **Academic Collaboration**
+- **Technical Training**
 
 ## 👥 Contributors
 
 Thanks to these excellent contributors:
 
 [![Contributors](https://contrib.rocks/image?repo=666ghj/Weibo_PublicOpinion_AnalysisSystem)](https://github.com/666ghj/Weibo_PublicOpinion_AnalysisSystem/graphs/contributors)
-
----
-
-<div align="center">
-
-**⭐ If this project helps you, please give us a star!**
-
-</div>
