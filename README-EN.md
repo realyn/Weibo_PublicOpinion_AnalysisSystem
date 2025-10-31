@@ -2,7 +2,7 @@
 
 <img src="static/image/logo_compressed.png" alt="Weibo Public Opinion Analysis System Logo" width="100%">
 
-<a href="https://trendshift.io/repositories/12461" target="_blank"><img src="https://trendshift.io/api/badge/repositories/12461" alt="666ghj%2FWeibo_PublicOpinion_AnalysisSystem | Trendshift" style="width: 250px; height: 55px;" width="250" height="55"/></a>
+<a href="https://trendshift.io/repositories/15286" target="_blank"><img src="https://trendshift.io/api/badge/repositories/15286" alt="666ghj%2FBettaFish | Trendshift" style="width: 250px; height: 55px;" width="250" height="55"/></a>
 
 <a href="https://leaflow.net/" target="_blank"><img src="static/image/Leaflow_logo.png" alt="666ghj%2FWeibo_PublicOpinion_AnalysisSystem | Leaflow" style="width: 150px;" width="150"/></a>
 
@@ -204,17 +204,7 @@ conda activate your_conda_name
 ```bash
 # Basic dependency installation
 pip install -r requirements.txt
-
-#========Below are optional========
-# If you need local sentiment analysis functionality, install PyTorch
-# CPU version
-pip install torch torchvision torchaudio
-
-# CUDA 11.8 version (if you have GPU)
-pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
-
-# Install transformers and other AI-related dependencies
-pip install transformers scikit-learn xgboost
+# If you do not want to use the local sentiment analysis model (which has low computational requirements and defaults to the CPU version), you can comment out the 'Machine Learning' section in this file before executing the command.
 ```
 
 ### 3. Install Playwright Browser Drivers
@@ -287,6 +277,8 @@ python app.py
 > Note 1: After a run is terminated, the Streamlit app might not shut down correctly and may still be occupying the port. If this occurs, find the process that is holding the port and kill it.
 
 > Note 2: Data scraping needs to be performed as a separate operation. Please refer to the instructions in section 5.3.
+
+> Note 3: If page display issues occur during remote server deployment, see [PR#45](https://github.com/666ghj/BettaFish/pull/45)
 
 Visit http://localhost:5000 to use the complete system
 

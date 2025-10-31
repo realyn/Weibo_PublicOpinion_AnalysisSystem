@@ -2,7 +2,7 @@
 
 <img src="static/image/logo_compressed.png" alt="Weibo Public Opinion Analysis System Logo" width="100%">
 
-<a href="https://trendshift.io/repositories/12461" target="_blank"><img src="https://trendshift.io/api/badge/repositories/12461" alt="666ghj%2FWeibo_PublicOpinion_AnalysisSystem | Trendshift" style="width: 250px; height: 55px;" width="250" height="55"/></a>
+<a href="https://trendshift.io/repositories/15286" target="_blank"><img src="https://trendshift.io/api/badge/repositories/15286" alt="666ghj%2FBettaFish | Trendshift" style="width: 250px; height: 55px;" width="250" height="55"/></a>
 
 <a href="https://leaflow.net/" target="_blank"><img src="static/image/Leaflow_logo.png" alt="666ghj%2FWeibo_PublicOpinion_AnalysisSystem | Leaflow" style="width: 150px;" width="150"/></a>
 
@@ -206,17 +206,7 @@ conda activate your_conda_name
 ```bash
 # 基础依赖安装
 pip install -r requirements.txt
-
-#========下面是可选项========
-# 如果需要本地情感分析功能，安装PyTorch
-# CPU版本
-pip install torch torchvision torchaudio
-
-# CUDA 11.8版本（如有GPU）
-pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
-
-# 安装transformers等AI相关依赖
-pip install transformers scikit-learn xgboost
+# 如果不想使用本地情感分析模型（算力需求很小，默认安装cpu版本），可以将该文件中的“机器学习”部分注释掉再执行指令
 ```
 
 ### 3. 安装Playwright浏览器驱动
@@ -292,6 +282,8 @@ python app.py
 > 注1：一次运行终止后，streamlit app可能结束异常仍然占用端口，此时搜索占用端口的进程kill掉即可
 
 > 注2：数据爬取需要单独操作，见5.3指引
+
+> 注3：如果服务器远程部署出现页面显示问题，见[PR#45](https://github.com/666ghj/BettaFish/pull/45)
 
 访问 http://localhost:5000 即可使用完整系统
 
