@@ -4,6 +4,9 @@
 
 <a href="https://trendshift.io/repositories/15286" target="_blank"><img src="https://trendshift.io/api/badge/repositories/15286" alt="666ghj%2FBettaFish | Trendshift" style="width: 250px; height: 55px;" width="250" height="55"/></a>
 
+<a href="https://aihubmix.com/?aff=8Ds9" target="_blank"><img src="./static/image/logo_aihubmix.png" alt="666ghj%2FBettaFish | Trendshift" height="40"/></a>&ensp;
+<a href="https://lioncc.ai/" target="_blank"><img src="./static/image/logo_loincc.png" alt="666ghj%2FBettaFish | Trendshift" height="40"/></a>
+
 [![GitHub Stars](https://img.shields.io/github/stars/666ghj/Weibo_PublicOpinion_AnalysisSystem?style=flat-square)](https://github.com/666ghj/Weibo_PublicOpinion_AnalysisSystem/stargazers)
 [![GitHub Watchers](https://img.shields.io/github/watchers/666ghj/Weibo_PublicOpinion_AnalysisSystem?style=flat-square)](https://github.com/666ghj/Weibo_PublicOpinion_AnalysisSystem/watchers)
 [![GitHub Forks](https://img.shields.io/github/forks/666ghj/Weibo_PublicOpinion_AnalysisSystem?style=flat-square)](https://github.com/666ghj/Weibo_PublicOpinion_AnalysisSystem/network)
@@ -27,6 +30,8 @@
 
 See the system-generated research report on "Wuhan University Public Opinion": [In-depth Analysis Report on Wuhan University's Brand Reputation](./final_reports/final_report__20250827_131630.html)
 
+See a complete system run example on "Wuhan University Public Opinion": [Video - In-depth Analysis Report on Wuhan University's Brand Reputation](https://www.bilibili.com/video/BV1TH1WBxEWN/?vd_source=da3512187e242ce17dceee4c537ec7a6#reply279744466833)
+
 Beyond just report quality, compared to similar products, we have 🚀 six major advantages:
 
 1. **AI-Driven Comprehensive Monitoring**: AI crawler clusters operate 24/7 non-stop, comprehensively covering 10+ key domestic and international social media platforms including Weibo, Xiaohongshu, TikTok, Kuaishou, etc. Not only capturing trending content in real-time, but also drilling down to massive user comments, letting you hear the most authentic and widespread public voice.
@@ -44,12 +49,20 @@ Beyond just report quality, compared to similar products, we have 🚀 six major
 **Starting with public opinion, but not limited to public opinion**. The goal of "WeiYu" is to become a simple and universal data analysis engine that drives all business scenarios.
 
 > For example, you only need to simply modify the API parameters and prompts of the Agent toolset to transform it into a financial market analysis system.
+>
+> Here's a relatively active Linux.do project discussion thread: https://linux.do/t/topic/1009280
 
 <div align="center">
 <img src="static/image/system_schematic.png" alt="banner" width="800">
 
 Say goodbye to traditional data dashboards. In "WeiYu", everything starts with a simple question - you just need to ask your analysis needs like a conversation
 </div>
+
+## 🪄 Sponsors
+
+LLM Model API Sponsor: <a href="https://aihubmix.com/?aff=8Ds9" target="_blank"><img src="./static/image/logo_aihubmix.png" alt="666ghj%2FBettaFish | Trendshift" height="40"/></a>
+
+Solomon Blog LionCC.ai; Programming Carpool codecodex.ai; Programming Computing Power VibeCodingAPI.ai: <span style="margin-left: 10px"><a href="https://lioncc.ai/" target="_blank"><img src="./static/image/logo_loincc.png" alt="666ghj%2FBettaFish | Trendshift" height="40"/></a></span>
 
 ## 🏗️ System Architecture
 
@@ -189,7 +202,9 @@ Weibo_PublicOpinion_AnalysisSystem/
 - **Database**: MySQL (optional, you can choose our cloud database service)
 - **Memory**: 2GB+ recommended
 
-### 1. Create Conda Environment
+### 1. Create Environment
+
+#### If Using Conda
 
 ```bash
 # Create conda environment
@@ -197,11 +212,21 @@ conda create -n your_conda_name python=3.11
 conda activate your_conda_name
 ```
 
+#### If Using uv
+
+```bash
+# Create uv environment
+uv venv --python 3.11 # Create Python 3.11 environment
+```
+
 ### 2. Install Dependencies
 
 ```bash
 # Basic dependency installation
 pip install -r requirements.txt
+
+# uv version command (faster installation)
+uv pip install -r requirements.txt
 # If you do not want to use the local sentiment analysis model (which has low computational requirements and defaults to the CPU version), you can comment out the 'Machine Learning' section in this file before executing the command.
 ```
 
@@ -216,9 +241,9 @@ playwright install chromium
 
 #### 4.1 Configure API Keys
 
-Copy the `config.py.example` file to `config.py`
+Copy the `.env.example` file in the project root directory to `.env`
 
-Edit the `config.py` file and fill in your API keys (you can also choose your own models and search proxies; see the config file for details):
+Edit the `.env` file and fill in your API keys (you can also choose your own models and search proxies; see the `.env.example` file in the project root directory or the `config.py` file for details):
 
 ```python
 # MySQL Database Configuration
@@ -239,17 +264,21 @@ INSIGHT_ENGINE_MODEL_NAME = "kimi-k2-0711-preview"
 # Media Agent
 ...
 ```
+Recommended LLM API Provider: [Reasoning Era](https://aihubmix.com/?aff=8Ds9)
 
 #### 4.2 Database Initialization
 
 **Option 1: Use Local Database**
 
-You can refer to `MindSpider\config.py.example` for the configuration template, copy this file and rename it to `config.py`.
+> ~~The MindSpider crawler system and the public opinion system are independent of each other, so you need to configure `MindSpider\config.py`. Copy the `config.py.example` file in the `MindSpider` folder and rename it to `config.py`.~~
+> Configuration has been changed to be based on environment variables. Please copy the `.env.example` file in the project root directory to `.env` and fill in all configurations in it.
 
 ```bash
 # Local MySQL database initialization
 cd MindSpider
-python schema/init_database.py
+# Project initialization
+python main.py --setup
+
 ```
 
 **Option 2: Use Cloud Database Service (Recommended)**
@@ -272,6 +301,15 @@ We provide convenient cloud database service with 100,000+ daily real public opi
 ```bash
 # In project root directory, activate conda environment
 conda activate your_conda_name
+
+# Start main application
+python app.py
+```
+
+uv version startup command:
+```bash
+# In project root directory, activate uv environment
+.venv\Scripts\activate
 
 # Start main application
 python app.py
@@ -315,6 +353,9 @@ cd MindSpider
 # Project initialization
 python main.py --setup
 
+# Run topic extraction (get hot news and keywords)
+python main.py --broad-topic
+
 # Run complete crawler workflow
 python main.py --complete --date 2024-01-20
 
@@ -325,7 +366,7 @@ python main.py --broad-topic --date 2024-01-20
 python main.py --deep-sentiment --platforms xhs dy wb
 ```
 
-## ⚙️ Advanced Configuration
+## ⚙️ Advanced Configuration (Deprecated: Configuration has been unified to the `.env` file in the project root directory, and other sub-agents automatically inherit the root directory configuration)
 
 ### Modify Key Parameters
 
